@@ -26,16 +26,15 @@ def imagefolder_loader(path):
     def loader(transform):
         data = datasets.ImageFolder(path, transform=transform)
         data_loader = DataLoader(data, shuffle=True, batch_size=batch_size,
-                                 num_workers=4)
+                                 num_workers=2)
         return data_loader
     return loader
 
 
 def sample_data(dataloader, image_size=4):
     transform = transforms.Compose([
-        transforms.Resize(image_size+int(image_size*0.2)+1),
+        transforms.Resize(image_size+int(image_size*0.1)+1),
         transforms.RandomCrop(image_size),
-        transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
@@ -173,7 +172,7 @@ def train(generator, discriminator, init_step, loader, total_iter=600000):
                     f'{log_folder}/sample/{str(i + 1).zfill(6)}.png',
                     nrow=10,
                     normalize=True,
-                    range=(-1, 1))
+                    value_range=(-1, 1))
  
         if (i+1) % 10000 == 0 or i==0:
             try:
